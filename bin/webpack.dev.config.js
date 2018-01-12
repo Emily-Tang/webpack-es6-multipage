@@ -43,8 +43,27 @@ let devConfig = {
                             ];
                         }
                     }
+                }, {
+                    loader: 'less-loader',
+                    options: {
+                        sourceMap: true
+                    }
                 }]
-            })
+            }),
+            exclude: /node_modules/
+        }, {
+            test: /\.xtpl$/,
+            loader: 'xtpl-loader'
         }]
-    }
+    },
+    resolve: {
+        extensions: ['.js']
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery'
+        })
+    ]
 }
