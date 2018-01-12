@@ -24,9 +24,12 @@
     "less-loader": "^4.0.5",
     "postcss-loader": "^2.0.10",
     "style-loader": "^0.19.1",
+    "url-loader": "^0.6.2",
     "webpack": "^3.10.0",
     "webpack-dev-middleware": "^2.0.4",
-    "webpack-hot-middleware": "^2.21.0"
+    "webpack-hot-middleware": "^2.21.0",
+    "xtpl": "^3.4.0",
+    "xtpl-loader": "^0.1.0"
   },
   "dependencies": {
     "jquery": "^3.2.1"
