@@ -17,7 +17,7 @@ function getEntry (globPath, pathDir) {
 }
 
 function getViewEntry (globPath) {
-    let paths = glob.sync(globPath);
+    let paths = glob.sync(globPath);  //Array:匹配到globPath的路径集合
     let entries = {},
         dirname = '',
         filename = '';

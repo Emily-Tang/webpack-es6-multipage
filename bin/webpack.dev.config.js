@@ -16,7 +16,7 @@ let devConfig = {
     devtool: 'source-map',
     entry: entries,
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.join(__dirname, '../dist/'),
         filename: 'build/[name]/index.js',
         publicPath: '/'
     },
@@ -39,14 +39,15 @@ let devConfig = {
                     options: {
                         plugins: function() {
                             return [
-                                require('autoprefixer')({ broswers: ['> 1%', 'last 2 versions']});
+                                require('autoprefixer')({ broswers: ['> 1%', 'last 2 versions']})
                             ];
-                        }
+                        },
+                        sourceMap: true
                     }
                 }, {
                     loader: 'less-loader',
                     options: {
-                        sourceMap: true
+                        sourceMap: false
                     }
                 }]
             }),
@@ -64,6 +65,30 @@ let devConfig = {
             $: 'jquery',
             jQuery: 'jquery',
             'window.jQuery': 'jquery'
-        })
+        }),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new ExtractTextPlugin('build/[name]/index.css'),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: 'commons'
+        }),
+        new webpack.HotModuleReplacementPlugin()
     ]
 }
+
+let pages = Object.keys(Entry.getViewEntry('views/*.html'));
+
+pages.forEach(function(filename) {
+    let conf = {
+        template: `ejs-render-loader!views/${filename}.html`, //html模板路径，默认使用ejs-loader
+        inject: false, //js插入的位置，true/'head'/'body'/false
+        filename: `${filename}.html` //输出文件[注意：这里的根路径是module.exports.output.path]
+    };
+
+    if (filename in devConfig.entry) {
+        conf.inject = 'body';
+        conf.chunks = ['commons', filename];
+    }
+    devConfig.plugins.push(new HtmlWebpackPlugin(conf));
+})
+
+module.exports = devConfig;
